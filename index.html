@@ -1,0 +1,158 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Slider</title>
+        <style type="text/css">
+            #wrap {
+                height: 450px;
+                width: 650px;
+                margin: 20px auto;
+                position: relative;
+            }
+            #container {
+                height: 450px;
+                width: 650px;
+                margin: 20px auto;
+                position: relative;
+            }
+            #img{
+                height: 450px;
+                width: 650px;
+                position: absolute;
+            }
+            #left_holder{
+                height: 450px;
+                width: 100px;
+                position: absolute;
+                left: 0px;
+                top:0px;
+            }
+            #right_holder{
+                height: 450px;
+                width: 100px;
+                right: 0px;
+                position: absolute;
+                top:0px;
+            }
+            #left{
+                height: 50px;
+                width: 50px;
+                position: absolute;
+                top:40%;
+                left: 5px;
+            }
+            #right{
+                height: 50px;
+                width: 50px;
+                position: absolute;
+                top:40%;
+                right: 5px;
+            }
+            
+            #buttons {
+                position: absolute;
+                left: 270px;
+                bottom: 10px;
+            }
+            
+            #buttons img {
+                float: left;
+                width: 20px;
+				cursor: pointer;
+            }
+        </style>
+        <script type="text/javascript">
+            function goto(x){
+                var image = document.getElementById('img');
+                image.src = "img/img" + x + ".jpg";
+                circleFunc(x);
+            }
+            
+            var imagecounter = 1;
+            var total = 5;
+            
+            function slide(x){
+                if (x == undefined) {
+                    x = 1;
+                }
+                var image = document.getElementById('img');
+                imagecounter = imagecounter+x;
+                if (imagecounter > total) {
+                    imagecounter = 1;
+                }else if (imagecounter < 1) {
+                    imagecounter = total;
+                }
+                image.src = "img/img" + imagecounter + ".jpg";
+                circleFunc(imagecounter);
+            }
+            timerid = setInterval(slide, 2000);
+            
+             function circleFunc(imagecounter){
+			    var buttons = document.getElementById('buttons');
+                buttons.innerHTML = "";
+                for(i=1; i<=total; i++){
+					var elem = document.createElement("img");
+					elem.setAttribute("onclick", "goto(" + i + ")");
+                    if (i == imagecounter) {
+                        elem.setAttribute("src", "img/circle1.png");  
+                    }else{
+                        elem.setAttribute("src", "img/circle0.png");
+                    }
+					buttons.appendChild(elem);
+                }
+             }
+            
+        </script>
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="container">
+                <img id="img" src="img/img1.jpg"/>
+                <div id="left_holder"><img onclick="slide(-1)" id="left" src="img/arrow_left.png"/></div>
+                <div id="right_holder"><img onclick="slide(+1)" id="right" src="img/arrow_right.png"/></div>
+            
+            <div id="buttons">
+               <img src="img/circle1.png" />
+               <img src="img/circle0.png" />
+               <img src="img/circle0.png" />
+               <img src="img/circle0.png" />
+               <img src="img/circle0.png" />
+            </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var arrowL = document.getElementById('left');
+            var arrowR = document.getElementById('right');
+            
+            arrowL.style.visibility="hidden";
+            arrowR.style.visibility="hidden";
+            
+            arrowL.addEventListener('mouseover', function(){
+            arrowL.src = "img/arrow_left_h.png";
+            });
+            
+            arrowL.addEventListener('mouseout', function(){
+            arrowL.src = "img/arrow_left.png";
+            })
+            
+            arrowR.addEventListener('mouseover', function(){
+            arrowR.src = "img/arrow_right_h.png";
+            });
+            
+            arrowR.addEventListener('mouseout', function(){
+            arrowR.src = "img/arrow_right.png";
+            })
+            
+            document.getElementById("wrap").addEventListener('mouseover', function(){
+                arrowL.style.visibility="";
+                arrowR.style.visibility="";
+                clearInterval(timerid);
+                })
+            document.getElementById('wrap').addEventListener('mouseout', function(){
+                arrowL.style.visibility="hidden";
+                arrowR.style.visibility="hidden";
+                timerid = setInterval(slide, 2000);
+                })
+        </script>
+    </body>
+</html>
